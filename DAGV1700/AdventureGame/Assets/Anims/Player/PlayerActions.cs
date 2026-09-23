@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerActions : MonoBehaviour
 {
+    [SerializeField] private PlayerOnGround isGrounded;
     [SerializeField] private Animator mAnimator;
 
     private void Awake()
@@ -11,10 +12,11 @@ public class PlayerActions : MonoBehaviour
             mAnimator = GetComponent<Animator>();
         }
     }
-    private float timeRemaining = 0;
+
     private void Update()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
+        
         if (Input.GetKeyUp(KeyCode.RightArrow))
         {
             mAnimator.SetBool("WalkingRight", false);
@@ -29,9 +31,18 @@ public class PlayerActions : MonoBehaviour
         {
             mAnimator.SetBool("WalkingLeft", true);
         }
+        
         if (Input.GetKeyUp(KeyCode.LeftArrow))
         {
             mAnimator.SetBool("WalkingLeft", false);  
         }
+        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            mAnimator.SetTrigger("Jump");  
+        }
+        
+        // Simplified ground check
+        mAnimator.SetBool("OnGround", isGrounded.isGrounded);
     }
 }
