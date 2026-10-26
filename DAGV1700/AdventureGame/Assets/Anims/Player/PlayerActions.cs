@@ -1,8 +1,12 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 public class PlayerActions : MonoBehaviour
 {
     [SerializeField] private PlayerOnGround isGrounded;
     [SerializeField] private Animator mAnimator;
+    [SerializeField] private AudioSource Audio1;
+    [SerializeField] private AudioSource Audio2;
 
     private void Awake()
     {
@@ -11,7 +15,7 @@ public class PlayerActions : MonoBehaviour
             mAnimator = GetComponent<Animator>();
         }
     }
-
+    bool isJumping;
     private void Update()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -35,14 +39,25 @@ public class PlayerActions : MonoBehaviour
             mAnimator.SetBool("WalkingLeft", false);
         }
 
+        // Simplified ground check
+        if (isGrounded.isGrounded==true&&isJumping==true)
+        {
+             Audio2.Play();
+            mAnimator.SetBool("OnGround", true);
+        }
+
 
         
         if (Input.GetKeyDown(KeyCode.Space))
         {
             mAnimator.SetTrigger("Jump");  
+            Audio1.Play();
+            isJumping=true;
+            mAnimator.SetBool("OnGround", false);
+
         }
-        
-        // Simplified ground check
-        mAnimator.SetBool("OnGround", isGrounded.isGrounded);
+
+
+
     }
 }

@@ -1,22 +1,27 @@
+
 using UnityEngine;
 
 public class PlayerOnGround : MonoBehaviour
 {
-    public bool isGrounded = false;
-
-    private void OnCollisionEnter(Collision collision)
+    public bool isGrounded;
+    void OnCollisionStay(Collision Collision)
     {
-        isGrounded = true;
+        
+        isGrounded=true;
+    }
+    void OnCollisionExit(Collision Collision)
+    {
+        
+        isGrounded=false;
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void Update()
     {
-        isGrounded = false;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            isGrounded=false;
+        }
     }
 
-    public bool IsGrounded()
-    {
-        return isGrounded;
-    }
 }
 
